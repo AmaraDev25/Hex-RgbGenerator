@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-compatible" content="IE-edge"/>
+<meta name="viewport" content="width=device-width ,initial-scale=1.0"/>
+<title>Rgb&Hex Generator</title>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+*{
+padding:0;
+margin:0;
+box-sizing:border-box;
+transition:all .5s .2s linear;
+font-family:'Poppins',sans-serif;
+}
+body{
+background:#09d44c;
+display:flex;
+flex-direction:column;
+min-height:100vh;
+justify-content:center;
+align-items:center;
+}
+.parent{
+background:#eee;
+border-radius:7px;
+padding:20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+max-width:70vw;
+}
+.parent h2{
+align-self:flex-start;
+}
+.parent .ranges{
+width:100%;
+}
+.parent .ranges input{
+width:90%;
+margin:0 0 10px;
+}
+.parent .ranges .red{
+accent-color:red;
+}
+.parent .ranges .green{
+accent-color:green;
+}
+.parent .ranges .blue{
+accent-color:blue;
+}
+.parent .color-box{
+border:solid 1px;
+border-radius:7px;
+height:140px;
+width:84%;
+}
+.parent .results{
+width:100%;
+display:flex;
+justify-content:space-between;
+}
+.parent .results .hex,.rgb{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:10px;
+}
+.parent .results button{
+outline:none;
+border:solid 1px;
+border-radius:7px;
+background:none;
+padding:8px;
+}
+.parent .results button:hover{
+background:#09d33c;
+color:#eee;
+letter-spacing:1px;
+}
+.rgb-code,.hex-code{
+opacity:0;
+transform:translateX(40px);
+height:0;
+width:90px;
+border:none;
+outline:none;
+background:none;
+font-size:17px;
+text-align:center;
+}
+.rgb-code{
+width:150px;
+}
+.show-code{
+opacity:1;
+transform:translateX(0);
+height:auto;
+}
+@media(min-width:1000px){
+.parent{
+margin:30px 0;
+}
+}
+@media(max-width:500px){
+.parent{
+margin:30px 0;
+}
+}
+</style>
+</head>
+<body>
+<section class="parent">
+<h2>Colors Codes Generator</h2>
+<p>change the ranges values to creat the hex and rgb codes !</p>
+<div class="ranges">
+<h3>Red</h3>
+<input type="range" class="red" min="0" max="255">
+<h3>Green</h3>
+<input type="range" class="green" min="0" max="255">
+<h3>Blue</h3>
+<input type="range" class="blue" min="0" max="255">
+</div>
+<div class="color-box"></div>
+<div class="results">
+<div class="rgb">
+	<input disabled class="rgb-code"/>
+<button class="show-rgb">Show Rgb Code</button>
+<button class="copy-rgb" onclick="copyCode(rgbCode)">Copy Rgb Code</button>
+</div>
+<div class="hex">
+	<input disabled class="hex-code"/>
+<button class="show-hex">Show Hex Code</button>
+<button class="copy-hex" onclick="copyCode(hexCode)">Copy Hex Code</button>
+</div>
+</div>
+</section>
+<script type="text/javascript">
+var rangeR = document.querySelector('.red');
+var rangeG = document.querySelector('.green');
+var rangeB = document.querySelector('.blue');
+var hexCode = document.querySelector('.hex-code');
+var rgbCode = document.querySelector('.rgb-code');
+var colorBox = document.querySelector('.color-box');
+var showRgbBtn= document.querySelector('.show-rgb');
+var showHexBtn= document.querySelector('.show-hex');
+
+function hex(v){
+var hex = v.toString(16);
+if(v < 16){
+hex= '0' + hex
+}
+return hex;
+}
+function switchColors(){
+var redValue = parseInt(rangeR.value)
+var greenValue = parseInt(rangeG.value)
+var blueValue = parseInt(rangeB.value)
+// hex and rgb results
+var hexColor =  '#' + hex(redValue)+hex(greenValue)+hex(blueValue);
+var rgbColor = `rgb(${redValue},${greenValue},${blueValue})`;
+//add to background of colorBox element
+colorBox.style.backgroundColor = rgbColor;
+//add the hexCode
+hexCode.value = hexColor;
+//add the rgbCode
+rgbCode.value = rgbColor;
+}
+
+rangeR.addEventListener('input',()=>{
+switchColors()
+});
+rangeG.addEventListener('input',()=>{
+switchColors()
+});
+rangeB.addEventListener('input',()=>{
+switchColors()
+});
+showRgbBtn.onclick=()=>{
+showCodesText(rgbCode);
+}
+showHexBtn.onclick=()=>{
+showCodesText(hexCode);
+}
+function showCodesText(v){
+v.classList.toggle('show-code')
+}
+function copyCode(c) {
+// Get the text field
+var copyText = c;
+// Select the text field
+copyText.select(c);
+copyText.setSelectionRange(0,99999); // For mobile devices
+// Copy the text inside the text field
+navigator.clipboard.writeText(copyText.value);
+// Alert the copied text
+alert('You Copied the code: '+copyText.value);
+}
+</script>
+</body>
+</html>
